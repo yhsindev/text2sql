@@ -1,6 +1,64 @@
 # text2sql 
 ROUTE 代碼分析
+## 代碼目錄
+### 1. **生成 SQL 查詢的提示欄位模板**
+- **`prompt_temp`**
+- **`prompt_sl_temp_sft`**
+- **`prompt_sl_temp`**
 
+### 2. **SQL 查詢正確性檢查**
+- **`prompt_nc_temp_sft`**
+- **`prompt_nc_temp`**
+
+### 3. **SQL 查詢補全（繼續寫作）**
+- **`prompt_cw_temp_sft`**
+- **`prompt_cw_temp`**
+
+### 4. **數據處理**
+- **`read_json_file`**
+
+### 5. **LLM 模型**
+- **`LLM_Model` 類**
+  - **`generate_response`**
+
+- **`LLM_Online` 類**
+  - **`generate_response`**
+
+### 6. **資料庫操作**
+- **`convert_fk_index`**
+- **`dump_db_json_schema`**
+- **`get_schema_dict`**
+- **`get_example_str`**
+- **`get_schmea_str_and_examples`**
+- **`parse_sql_from_string`**
+- **`replace_multiple_spaces`**
+- **`filter_dict_by_sql`**
+- **`filter_dict_by_sl`**
+
+### 7. **SQL 查詢執行**
+- **`execute_query_limit`**
+- **`execute_query`**
+
+### 8. **語句替換**
+- **`replace_syn`**
+
+### 9. **GPU 資源管理**
+- **`usegpu`**
+
+### 10. **主程序執行**
+- **`eval_all`**
+  
+### 11. **主函數**
+- **`__main__`**
+
+---
+
+## 三、目錄結構
+- `script.py`: 主代碼文件
+- `dataset/`: 數據集文件夾
+- `output/`: 輸出結果文件夾
+
+# 具體語法細節
 ## 一、載入套件
 
 1. **數據處理**：
@@ -25,7 +83,7 @@ ROUTE 代碼分析
 6. **進度顯示**：
    - `tqdm`：用於顯示進度條，幫助跟蹤任務的進度。
 
-## 二、訓練前處理  
+## 二、 生成前準備：SQL 語料處理  
 ### 1. 生成 SQL 查詢的提示欄位模板
 
 - **`prompt_temp`**：
@@ -53,18 +111,19 @@ ROUTE 代碼分析
 - **`prompt_cw_temp`**：
   - **功能**：同上，並提供範例，展示如何將不完整的 SQL 查詢補全為正確的查詢。
 
-### 4. 數據處理與模型運行
+## 生成前準備：功能函式、類別定義
+### 1. 數據處理與模型運行
 
 - **`read_json_file`**：
   - **功能**：讀取 JSON 文件並將其轉換為 Python 數據結構（如字典或列表）。
 
 - **`LLM_Model` 類**：
-  - **功能**：用於初始化語言模型，設置生成參數並生成回應（SQL 查詢）。
+  - **功能**：用於初始化語言模型，設置生成參數並生成回應（SQL 查詢）、設置分詞器。
 
 - **`generate_response`**：
   - **功能**：根據給定的提示（`prompts`）生成回應，並根據參數（如 `temperature`, `top_p`）控制生成的隨機性。
 
-### 5. 資料庫操作
+### 2. 資料庫操作
 
 - **`get_schema_dict`**：
   - **功能**：從 SQLite 資料庫中提取結構信息（表格名、欄位名、資料類型等）並整理成字典。
@@ -75,7 +134,7 @@ ROUTE 代碼分析
 - **`execute_query`**：
   - **功能**：執行 SQL 查詢並檢查結果，根據執行是否成功進行後續處理。
 
-### 6. 訓練過程設置
+### 3. 訓練過程設置
 
 - **`eval_all`**：
   - **功能**：解析數據集、設置訓練參數、生成 SQL 查詢提示、執行 SQL 查詢生成，並對查詢進行後處理（如噪聲修正、查詢補全等）。
