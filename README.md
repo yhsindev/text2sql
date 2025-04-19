@@ -187,7 +187,7 @@
    - 資料集
      - Vanilla
      - CoT-enhanced dataset(先拿 BIRD?)
-4. direct preference optimization (DPO) 4/29
+4. direct preference optimization (DPO) 4/29
    - 代碼
      - 參考 ROUTE 代碼
      - 找 DPO－SQL 代碼（待處理）
